@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    dockerfile true
+    dockerfile false
   }
   stages {
     stage ("Deployment Job") {
