@@ -1,0 +1,41 @@
+# ***** Install Google Clould SDK *****
+
+# Add the Cloud SDK distribution URI as a package source
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+# Import the Google Cloud Platform public key
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+
+# Update the package list and install the Cloud SDK
+sudo apt-get update && sudo apt-get install google-cloud-sdk
+
+# ***** Initialize Google Cloud SDK *****
+
+# Configure docker authentication
+gcloud auth configure-docker
+
+# Initialize SDK
+gcloud init
+
+# ***** Build Docker Image *****
+
+docker build . -t superleague-devops-image
+
+# ***** Docker image Push to GCR *****
+
+# Tag docker image (<google repo>/<google project id>/<image-name>
+docker tag superleague-devops-image gcr.io/sturdy-willow-260305/superleague-devops-image
+
+# Push Docker image to GCR (<google repo>/<google project id>/<image-name>
+docker push gcr.io/sturdy-willow-260305/superleague-devops-image
+
+# View docker images
+docker images
+
+# Remove docker image
+docker rmi -f superleague-devops-image gcr.io/sturdy-willow-260305/superleague-devops-image
+
+# View docker images
+docker images
+
+echo "***** Docker Image has successfully been pushed onto Google Cloud Repository *****"
